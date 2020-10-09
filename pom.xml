@@ -68,11 +68,19 @@
 			<artifactId>hibernate-hikaricp</artifactId>
 		</dependency>
 
+		<!-- Flyway	-->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
 
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.14</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Tests -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
