@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blog_project_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 01112001
+  jpa:
+    open-in-view: false
+    show-sql: true
