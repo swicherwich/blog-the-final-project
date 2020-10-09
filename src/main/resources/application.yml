@@ -4,6 +4,15 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: 01112001
-  jpa:
-    open-in-view: false
-    show-sql: true
+
+flyway:
+  check-location: false
+  url: jdbc:postgresql://localhost:5432/blog_project_db
+  locations: classpath:db/migration
+  schemas: public
+  init-version: 1 # version to start migration
+  sql-migration-prefix: V
+  sql-migration-suffix: .sql
+  enabled: true
+  user: postgres
+  password: 01112001
