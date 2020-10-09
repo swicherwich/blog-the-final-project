@@ -68,6 +68,12 @@
 			<artifactId>hibernate-hikaricp</artifactId>
 		</dependency>
 
+		<!-- Postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
 		<!-- Flyway	-->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
