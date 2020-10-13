@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,7 +26,7 @@ public class Post extends AbstractEntity {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "created_at", nullable = false, updatable = false)
 	@CreationTimestamp
-	private LocalDateTime createDate;
+	private Date createDate;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -53,11 +54,11 @@ public class Post extends AbstractEntity {
 		this.body = body;
 	}
 	
-	public LocalDateTime getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 	
-	public void setCreateDate(LocalDateTime createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 	
