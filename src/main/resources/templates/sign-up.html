@@ -1,9 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
+    <div th:replace="/fragments/header :: header-css"/>
 </head>
     <body>
+
+        <div th:replace="/fragments/header :: header"/>
+
         <div class="container">
             <!--Show this info message only if registered successfully-->
             <div class="alert alert-info" th:if="${successMessage}" th:utext="${successMessage}"></div>
@@ -45,6 +48,6 @@
                 </div>
             </div>
         </div>
+        <div th:replace="/fragments/footer :: footer"/>
     </body>
-
 </html>
