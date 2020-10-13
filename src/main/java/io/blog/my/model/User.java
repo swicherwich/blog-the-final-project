@@ -1,6 +1,5 @@
 package io.blog.my.model;
 
-import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,11 +38,11 @@ public class User extends AbstractEntity implements UserDetails {
 	)
 	private List<Role> roles;
 	
-	@Builder.Default
+	@Transient
 	private Boolean locked = false;
 	
-	@Builder.Default
-	private Boolean enabled = false;
+	@Column(nullable = false)
+	private Boolean enabled;
 	
 	public User() {
 	}
