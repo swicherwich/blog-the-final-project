@@ -2,10 +2,9 @@ package io.blog.my.controller;
 
 import io.blog.my.model.User;
 import io.blog.my.model.auth.ConfirmationToken;
-import io.blog.my.repository.ConfirmationTokenRepository;
-import io.blog.my.repository.UserRepository;
 import io.blog.my.service.ConfirmationTokenService;
 import io.blog.my.service.UserService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
+import java.security.Principal;
 
-@RestController
-@RequestMapping("/users")
+@Controller
 public class UserController {
 	
 	private final ConfirmationTokenService confirmationTokenService;
@@ -30,7 +29,7 @@ public class UserController {
 	@GetMapping("/sign-up")
 	public String registration(Model model) {
 		model.addAttribute("user", new User());
-		return "registration";
+		return "/sign-up";
 	}
 	
 	@PostMapping("/sign-up")
@@ -40,7 +39,7 @@ public class UserController {
 		model.addAttribute("successMessage", "User has been registered successfully");
 		model.addAttribute("user", new User());
 		
-		return "redirect:/sign-up";
+		return "/sign-up";
 	}
 	
 	@GetMapping("/sign-up/confirm")
@@ -49,7 +48,14 @@ public class UserController {
 		Optional<ConfirmationToken> optionalConfirmationToken = confirmationTokenService.findConfirmationTokenByToken(token);
 		
 		optionalConfirmationToken.ifPresent(userService::confirmUser);
-		
-		return "redirect:/sign-up";
+		return "/sign-up";
+	}
+	
+	@GetMapping("sign-in")
+	public String signIn(Principal principal) {
+		if(principal != null) {
+			return "/home";
+		}
+		return "/sign-in";
 	}
 }
