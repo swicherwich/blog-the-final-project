@@ -1,19 +1,15 @@
 package io.blog.my.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "roles")
 public class Role extends AbstractEntity {
 	
 	public enum Roles {
-		USER_ROLE
+		USER_ROLE,
+		ADMIN_ROLE
 	}
 	
 	@Column(nullable = false, unique = true)
@@ -26,4 +22,19 @@ public class Role extends AbstractEntity {
 	public Role() {
 	}
 	
+	public Roles getRole() {
+		return role;
+	}
+	
+	public void setRole(Roles role) {
+		this.role = role;
+	}
+	
+	public List<User> getUsers() {
+		return users;
+	}
+	
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 }
