@@ -1,18 +1,21 @@
 package io.blog.my.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
-
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User extends AbstractEntity {
+public class User extends AbstractEntity implements UserDetails {
 
 	@Email(message = "*Please provide with valid email address")
 	@Column(nullable = false, unique = true)
@@ -34,10 +37,15 @@ public class User extends AbstractEntity {
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
-	private Set<Role> roles;
+	private List<Role> roles;
+	
+	@Builder.Default
+	private Boolean locked = false;
+	
+	@Builder.Default
+	private Boolean enabled = false;
 	
 	public User() {
-	
 	}
 	
 	public String getEmail() {
@@ -52,8 +60,34 @@ public class User extends AbstractEntity {
 		return username;
 	}
 	
+	@Override
+	public boolean isAccountNonExpired() {
+		return !locked;
+	}
+	
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+	
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Role.Roles.USER_ROLE.name());
+		return Collections.singletonList(simpleGrantedAuthority);
 	}
 	
 	public String getPassword() {
@@ -64,11 +98,19 @@ public class User extends AbstractEntity {
 		this.password = password;
 	}
 	
-	public Set<Role> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 	
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public void setLocked(Boolean locked) {
+		this.locked = locked;
 	}
 }
