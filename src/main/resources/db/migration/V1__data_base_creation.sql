@@ -2,12 +2,9 @@ create table users (
     id         bigserial   not null
         constraint user_pk
             primary key,
-    first_name varchar(32) not null,
-    last_name  varchar(32) not null,
     username   varchar(32) not null,
     password   text        not null,
-    email      varchar(32) not null,
-    active     integer     not null
+    email      varchar(32) not null
 );
 
 create unique index user_email_uindex
@@ -41,7 +38,7 @@ create table posts (
             primary key,
     title       text      not null,
     body        text      not null,
-    create_date timestamp not null,
+    created_at timestamp not null,
     user_id     bigserial not null
         constraint posts_users_id_fk
             references users
@@ -52,7 +49,7 @@ create table comments (
         constraint comments_pk
             primary key,
     body        text      not null,
-    create_date timestamp not null,
+    created_at timestamp not null,
     post_id     bigserial not null
         constraint comments_posts_id_fk
             references posts,
@@ -61,3 +58,13 @@ create table comments (
             references users
 );
 
+create table confirmation_token (
+    id          bigserial not null
+            constraint confirmation_token_pk
+                primary key,
+    token       text not null,
+    created_at  date not null,
+    user_id     bigserial not null
+            constraint comments_users_id_fk
+                references users
+);
