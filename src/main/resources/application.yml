@@ -4,7 +4,20 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: 01112001
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
 flyway:
   check-location: false
   url: jdbc:postgresql://localhost:5432/blog_project_db
