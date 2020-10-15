@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService {
 		mailMessage.setSubject("Mail Confirmation Link!");
 		mailMessage.setFrom("gitgilfoyle@gmail.com");
 		mailMessage.setText(
-				"Thank you for registering. Please click on the below link to activate your account." + url + "/sign-up/confirm?token="
+				"Thank you for registering. Please click on the below link to activate your account:\n" + url + "/sign-up/confirm?token="
 						+ token);
 		
 		emailSenderService.sendEmail(mailMessage);
@@ -53,12 +55,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void signUpUser(User user) {
-		final String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
-		
-		user.setPassword(encryptedPassword);
-		
 		var confirmationToken = new ConfirmationToken(user);
 		
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		confirmationTokenService.saveConfirmationToken(confirmationToken);
 		
 		sendConfirmationMail(user.getEmail(), confirmationToken.getConfirmationToken());
@@ -66,13 +65,22 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void confirmUser(ConfirmationToken confirmationToken) {
-		final User user = confirmationToken.getUser();
-		
+		User user = confirmationToken.getUser();
+
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setEnabled(true);
 		
 		userRepository.save(user);
-		
-		confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
+//		confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
 	}
 	
+	@Override
+	public Optional<User> findByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
+	
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 }
