@@ -6,12 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "roles")
 public class Role extends AbstractEntity {
-	
-	public enum Roles {
-		USER_ROLE,
-		ADMIN_ROLE
-	}
-	
+
 	@Column(nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private Roles role;
@@ -20,6 +15,10 @@ public class Role extends AbstractEntity {
 	private List<User> users;
 	
 	public Role() {
+	}
+	
+	public Role(Roles role) {
+		this.role = role;
 	}
 	
 	public Roles getRole() {

@@ -45,6 +45,7 @@ public class User extends AbstractEntity implements UserDetails {
 	private Boolean enabled;
 	
 	public User() {
+		this.roles = List.of(new Role(Roles.USER_ROLE));
 	}
 	
 	public String getEmail() {
@@ -85,7 +86,7 @@ public class User extends AbstractEntity implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Role.Roles.USER_ROLE.name());
+		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Roles.USER_ROLE.name());
 		return Collections.singletonList(simpleGrantedAuthority);
 	}
 	
@@ -111,5 +112,16 @@ public class User extends AbstractEntity implements UserDetails {
 	
 	public void setLocked(Boolean locked) {
 		this.locked = locked;
+	}
+	
+	@Override
+	public String toString() {
+		return "User{" +
+				"email='" + email + '\'' +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", roles=" + roles.toString() +
+				", enabled=" + enabled +
+				'}';
 	}
 }
