@@ -27,31 +27,47 @@ public class UserController {
 	}
 	
 	@GetMapping("/sign-up")
-	public String registration(Model model) {
+	public String signUp(Model model) {
 		model.addAttribute("user", new User());
 		return "/sign-up";
 	}
-	
+
 	@PostMapping("/sign-up")
-	public String signUp(@Valid User user, BindingResult bindingResult, Model model) {
-		userService.signUpUser(user);
+	public String signUp(@Valid User user,
+	                            BindingResult bindingResult,
+	                            Model model) {
 		
-		model.addAttribute("successMessage", "User has been registered successfully");
-		model.addAttribute("user", new User());
+		if (userService.findByEmail(user.getEmail()).isPresent()) {
+			bindingResult
+					.rejectValue("email", "error.user",
+							"There is already a user registered with the email provided");
+		}
+		
+		if (userService.findByUsername(user.getUsername()).isPresent()) {
+			bindingResult
+					.rejectValue("username", "error.user",
+							"There is already a user registered with the username provided");
+		}
+		
+		if (!bindingResult.hasErrors()) {
+			user.setEnabled(false);
+			userService.signUpUser(user);
+			
+			model.addAttribute("successMessage", "Confirmation email has been sent");
+			model.addAttribute("user", new User());
+		}
 		
 		return "/sign-up";
 	}
 	
 	@GetMapping("/sign-up/confirm")
 	String confirmMail(@RequestParam("token") String token) {
-		
 		Optional<ConfirmationToken> optionalConfirmationToken = confirmationTokenService.findConfirmationTokenByToken(token);
-		
 		optionalConfirmationToken.ifPresent(userService::confirmUser);
-		return "/sign-up";
+		return "/sign-in";
 	}
-	
-	@GetMapping("sign-in")
+
+	@GetMapping("/sign-in")
 	public String signIn(Principal principal) {
 		if(principal != null) {
 			return "/home";
