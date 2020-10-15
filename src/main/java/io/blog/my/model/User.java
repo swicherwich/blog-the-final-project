@@ -30,7 +30,7 @@ public class User extends AbstractEntity implements UserDetails {
 	@NotEmpty(message = "*Please provide your password")
 	private String password;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "user_role",
 			joinColumns = @JoinColumn(name = "user_id"),
@@ -45,7 +45,6 @@ public class User extends AbstractEntity implements UserDetails {
 	private Boolean enabled;
 	
 	public User() {
-		this.roles = List.of(new Role(Roles.USER_ROLE));
 	}
 	
 	public String getEmail() {
@@ -86,7 +85,7 @@ public class User extends AbstractEntity implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Roles.USER_ROLE.name());
+		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Roles.ROLE_USER.name());
 		return Collections.singletonList(simpleGrantedAuthority);
 	}
 	
