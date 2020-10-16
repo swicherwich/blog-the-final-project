@@ -4,7 +4,8 @@ create table users (
             primary key,
     username   varchar(32) not null,
     password   text        not null,
-    email      varchar(32) not null
+    email      varchar(32) not null,
+    enabled    bool not null default false
 );
 
 create unique index user_email_uindex
