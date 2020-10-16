@@ -50,11 +50,13 @@ public class UserController {
 		}
 		
 		if (!bindingResult.hasErrors()) {
-			user.setEnabled(false);
 			userService.signUpUser(user);
 			
-			model.addAttribute("successMessage", "Confirmation email has been sent");
-			model.addAttribute("user", new User());
+			if(userService.findByUsername(user.getUsername()).isPresent()) {
+				model.addAttribute("successMessage", "User has been registered successfully!");
+				model.addAttribute("user", new User());
+			}
+			
 		}
 		
 		return "/sign-up";
