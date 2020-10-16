@@ -1,7 +1,10 @@
 package io.blog.my.service.impl;
 
+import io.blog.my.model.Role;
+import io.blog.my.model.Roles;
 import io.blog.my.model.User;
 import io.blog.my.model.auth.ConfirmationToken;
+import io.blog.my.repository.RoleRepository;
 import io.blog.my.repository.UserRepository;
 import io.blog.my.service.ConfirmationTokenService;
 import io.blog.my.service.EmailSenderService;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -19,15 +23,17 @@ public class UserServiceImpl implements UserService {
 	
 	private final String url = "http://localhost:8080";
 	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 	private final EmailSenderService emailSenderService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final ConfirmationTokenService confirmationTokenService;
 	
 	public UserServiceImpl(UserRepository userRepository,
-	                       EmailSenderService emailSenderService,
+	                       RoleRepository roleRepository, EmailSenderService emailSenderService,
 	                       BCryptPasswordEncoder bCryptPasswordEncoder,
 	                       ConfirmationTokenService confirmationTokenService) {
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
 		this.emailSenderService = emailSenderService;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.confirmationTokenService = confirmationTokenService;
@@ -55,20 +61,26 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void signUpUser(User user) {
-		var confirmationToken = new ConfirmationToken(user);
+//		var confirmationToken = new ConfirmationToken(user);
+//
+//		confirmationTokenService.saveConfirmationToken(confirmationToken);
+//
+//		sendConfirmationMail(user.getEmail(), confirmationToken.getConfirmationToken());
 		
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		confirmationTokenService.saveConfirmationToken(confirmationToken);
+		user.setEnabled(true);
+		user.setRoles(Collections.singletonList(roleRepository.findByRole(Roles.ROLE_USER.name())));
 		
-		sendConfirmationMail(user.getEmail(), confirmationToken.getConfirmationToken());
+		userRepository.save(user);
 	}
 	
 	@Override
 	public void confirmUser(ConfirmationToken confirmationToken) {
 		User user = confirmationToken.getUser();
 
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setEnabled(true);
+		user.setRoles(Collections.singletonList(roleRepository.findByRole(Roles.ROLE_USER.name())));
 		
 		userRepository.save(user);
 //		confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
