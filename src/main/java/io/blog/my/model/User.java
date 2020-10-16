@@ -30,7 +30,7 @@ public class User extends AbstractEntity implements UserDetails {
 	@NotEmpty(message = "*Please provide your password")
 	private String password;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_role",
 			joinColumns = @JoinColumn(name = "user_id"),
@@ -113,14 +113,4 @@ public class User extends AbstractEntity implements UserDetails {
 		this.locked = locked;
 	}
 	
-	@Override
-	public String toString() {
-		return "User{" +
-				"email='" + email + '\'' +
-				", username='" + username + '\'' +
-				", password='" + password + '\'' +
-				", roles=" + roles.toString() +
-				", enabled=" + enabled +
-				'}';
-	}
 }
