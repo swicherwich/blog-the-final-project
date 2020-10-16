@@ -8,8 +8,7 @@ import java.util.List;
 public class Role extends AbstractEntity {
 
 	@Column(nullable = false, unique = true)
-	@Enumerated(EnumType.STRING)
-	private Roles role;
+	private String role;
 	
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
 	private List<User> users;
@@ -17,15 +16,15 @@ public class Role extends AbstractEntity {
 	public Role() {
 	}
 	
-	public Role(Roles role) {
+	public Role(String role) {
 		this.role = role;
 	}
 	
-	public Roles getRole() {
+	public String getRole() {
 		return role;
 	}
 	
-	public void setRole(Roles role) {
+	public void setRole(String  role) {
 		this.role = role;
 	}
 	
