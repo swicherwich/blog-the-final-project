@@ -1,11 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="/fragments/header :: header-css"/>
+    <title>Sign-up</title>
+    <div th:replace="fragments/header :: header-css"></div>
 </head>
     <body>
 
-        <div th:replace="/fragments/header :: header"/>
+        <div th:replace="fragments/header :: header"></div>
 
         <div class="container">
             <!--Show this info message only if registered successfully-->
@@ -48,6 +49,6 @@
                 </div>
             </div>
         </div>
-        <div th:replace="/fragments/footer :: footer"/>
+        <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>
