@@ -33,43 +33,38 @@ public class PostController {
 			
 			model.addAttribute("post", post);
 			
-			return "/postForm";
-			
-		} else {
-			return "/error";
+			return "/newPost";
 		}
+		return "/error";
 	}
 	
 	@PostMapping("/newPost")
 	public String createNewPost(@Valid Post post,
 	                            BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "/postForm";
-		} else {
-			postService.save(post);
-			return "redirect:/blog/" + post.getUser().getUsername();
-		}
+		
+		if (bindingResult.hasErrors())
+			return "/newPost";
+		
+		postService.save(post);
+		return "redirect:/blog/" + post.getUser().getUsername();
 	}
 	
 	@GetMapping("/editPost/{id}")
 	public String editPostWithId(@PathVariable Long id,
 	                             Principal principal,
 	                             Model model) {
+		
 		Optional<Post> optionalPost = postService.findForId(id);
 		
 		if (optionalPost.isPresent()) {
-			Post post = optionalPost.get();
-			
-			if (isPrincipalOwnerOfPost(principal, post)) {
-				model.addAttribute("post", post);
-				return "/postForm";
-			} else {
-				return "/403";
+			if (isPrincipalOwnerOfPost(principal, optionalPost.get())) {
+				model.addAttribute("post", optionalPost.get());
+				
+				return "/newPost";
 			}
-			
-		} else {
-			return "/error";
+			return "/403";
 		}
+		return "/error";
 	}
 	
 	@GetMapping("/post/{id}")
@@ -80,17 +75,14 @@ public class PostController {
 		
 		if (optionalPost.isPresent()) {
 			Post post = optionalPost.get();
-			
 			model.addAttribute("post", post);
-			if (isPrincipalOwnerOfPost(principal, post)) {
+			
+			if (isPrincipalOwnerOfPost(principal, post))
 				model.addAttribute("username", principal.getName());
-			}
 			
 			return "/post";
-			
-		} else {
-			return "/error";
 		}
+		return "/error";
 	}
 	
 	@DeleteMapping("/post/{id}")
@@ -103,14 +95,11 @@ public class PostController {
 			
 			if (isPrincipalOwnerOfPost(principal, post)) {
 				postService.delete(post);
-				return "/home";
-			} else {
-				return "/403";
+				return "redirect:/home";
 			}
-			
-		} else {
-			return "/error";
+			return "/403";
 		}
+		return "/error";
 	}
 	
 	private boolean isPrincipalOwnerOfPost(Principal principal, Post post) {

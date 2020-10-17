@@ -33,11 +33,10 @@ public class BlogController {
 		if (optionalUser.isPresent()) {
 			User user = optionalUser.get();
 			Page<Post> posts = postService.findByUserOrderedByDatePageable(user, page);
-			Pager pager = new Pager(posts);
 			
-			model.addAttribute("pager", pager);
+			model.addAttribute("pager", new Pager(posts));
 			model.addAttribute("user", user);
-			return "/posts";
+			return "/blog";
 		}
 		return "/error";
 	}

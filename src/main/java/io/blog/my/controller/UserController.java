@@ -72,7 +72,7 @@ public class UserController {
 	@GetMapping("/sign-in")
 	public String signIn(Principal principal) {
 		if(principal != null) {
-			return "/home";
+			return "redirect:/home";
 		}
 		return "/sign-in";
 	}
