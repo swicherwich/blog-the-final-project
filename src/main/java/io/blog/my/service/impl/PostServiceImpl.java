@@ -14,6 +14,7 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 	
 	private final PostRepository postRepository;
+	private final int MAX_POSTS_ON_PAGE = 5;
 	
 	public PostServiceImpl(PostRepository postRepository) {
 		this.postRepository = postRepository;
@@ -26,12 +27,12 @@ public class PostServiceImpl implements PostService {
 	
 	@Override
 	public Page<Post> findByUserOrderedByDatePageable(User user, int page) {
-		return postRepository.findByUserOrderByCreateDateDesc(user, PageRequest.of(subtractPageByOne(page), 5));
+		return postRepository.findByUserOrderByCreateDateDesc(user, PageRequest.of(subtractPageByOne(page), MAX_POSTS_ON_PAGE));
 	}
 	
 	@Override
 	public Page<Post> findAllOrderedByDatePageable(int page) {
-		return postRepository.findAllByOrderByCreateDateDesc(PageRequest.of(subtractPageByOne(page), 5));
+		return postRepository.findAllByOrderByCreateDateDesc(PageRequest.of(subtractPageByOne(page), MAX_POSTS_ON_PAGE));
 	}
 	
 	@Override
