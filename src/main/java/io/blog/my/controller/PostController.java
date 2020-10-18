@@ -4,6 +4,7 @@ import io.blog.my.model.Post;
 import io.blog.my.model.User;
 import io.blog.my.service.PostService;
 import io.blog.my.service.UserService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
 
+@Controller
 public class PostController {
 	
 	private final PostService postService;
@@ -42,8 +44,9 @@ public class PostController {
 	public String createNewPost(@Valid Post post,
 	                            BindingResult bindingResult) {
 		
-		if (bindingResult.hasErrors())
+		if (bindingResult.hasErrors()) {
 			return "/newPost";
+		}
 		
 		postService.save(post);
 		return "redirect:/blog/" + post.getUser().getUsername();
@@ -79,13 +82,12 @@ public class PostController {
 			
 			if (isPrincipalOwnerOfPost(principal, post))
 				model.addAttribute("username", principal.getName());
-			
 			return "/post";
 		}
 		return "/error";
 	}
 	
-	@DeleteMapping("/post/{id}")
+	@PostMapping("/deletePost/{id}")
 	public String deletePostWithId(@PathVariable Long id,
 	                               Principal principal) {
 		Optional<Post> optionalPost = postService.findForId(id);
