@@ -7,7 +7,7 @@
                   th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
             <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
                     th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-            <link rel="stylesheet" href="/static/css/main.css" th:href="@{/css/main.css}"/>
+            <link rel="stylesheet" href="/static/css/main.css" th:href="@{/static/css/main.css}"/>
         </div>
     </head>
 
@@ -29,15 +29,15 @@
                             <li class="active"><a href="/sign-in" th:href="@{/sign-in}">Sign in</a></li>
                         </ul>
                         <!-- show My Blog only if user is authenticated -->
-                        <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_USER')">
+                        <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
                             <li class="active"><a href="/blog/" th:href="@{'/blog/' + ${#authentication.getName()}}">My Blog</a></li>
                         </ul>
                         <!-- show new post only if user is authenticated -->
-                        <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_USER')">
+                        <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
                             <li class="active"><a th:href="@{/newPost}">New Post</a></li>
                         </ul>
                         <!-- show sign out only if user is authenticated -->
-                        <ul class="nav navbar-nav" sec:authorize="hasRole('ROLE_USER')">
+                        <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
                             <li class="active"><a th:href="@{/logout}">Sign Out</a></li>
                         </ul>
                     </div>
