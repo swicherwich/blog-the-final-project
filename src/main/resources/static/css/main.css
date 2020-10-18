@@ -1,9 +1,15 @@
 h1 {
-    color: #0000FF;
+    color: dimgrey;
+}
+
+p {
+    color: grey;
+    font-family: "Fira Code", serif;
+    font-size: 1.2em;
 }
 
 h2 {
-    color: #FF0000;
+    color: lightslategrey;
 }
 
 footer {
@@ -28,4 +34,8 @@ a:hover, a:focus, a:active {
 .pagination {
     display: block;
     text-align: center;
+}
+
+.row {
+    margin-top: 20px;
 }
