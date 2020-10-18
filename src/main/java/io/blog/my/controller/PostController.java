@@ -36,6 +36,7 @@ public class PostController {
 			Post post = new Post();
 			post.setUser(user.get());
 			
+			modelAndView.setViewName("/newPost");
 			modelAndView.addObject("post", post);
 			
 			return modelAndView;
@@ -48,13 +49,15 @@ public class PostController {
 	@PostMapping("/newPost")
 	public ModelAndView createNewPost(@Valid Post post,
 	                            BindingResult bindingResult) {
+		ModelAndView modelAndView = new ModelAndView("newPost");
 		
 		if (bindingResult.hasErrors()) {
-			return new ModelAndView("newPost");
+			return modelAndView;
 		}
 		
 		postService.save(post);
-		return new ModelAndView("redirect:/blog/" + post.getUser().getUsername());
+		modelAndView.setViewName("redirect:/blog/" + post.getUser().getUsername());
+		return modelAndView;
 	}
 	
 	@GetMapping("/editPost/{id}")
