@@ -5,6 +5,7 @@ import io.blog.my.model.User;
 import io.blog.my.service.PostService;
 import io.blog.my.service.UserService;
 import io.blog.my.util.Pager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ public class BlogController {
 	private final UserService userService;
 	private final PostService postService;
 	
+	@Autowired
 	public BlogController(UserService userService, PostService postService) {
 		this.userService = userService;
 		this.postService = postService;

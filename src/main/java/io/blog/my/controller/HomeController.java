@@ -3,6 +3,7 @@ package io.blog.my.controller;
 import io.blog.my.model.Post;
 import io.blog.my.service.PostService;
 import io.blog.my.util.Pager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ public class HomeController {
 	
 	private final PostService postService;
 	
+	@Autowired
 	public HomeController(PostService postService) {
 		this.postService = postService;
 	}

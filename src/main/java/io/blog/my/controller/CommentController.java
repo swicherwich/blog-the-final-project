@@ -6,6 +6,7 @@ import io.blog.my.model.User;
 import io.blog.my.service.CommentService;
 import io.blog.my.service.PostService;
 import io.blog.my.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ public class CommentController {
 	private final PostService postService;
 	private final CommentService commentService;
 	
+	@Autowired
 	public CommentController(UserService userService, PostService postService, CommentService commentService) {
 		this.userService = userService;
 		this.postService = postService;
