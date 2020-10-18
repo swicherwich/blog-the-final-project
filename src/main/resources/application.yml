@@ -5,6 +5,14 @@ spring:
     username: <username>
     password: <password>
 
+  thymeleaf:
+    cache: false
+    check-template: true
+    check-template-location: true
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+
 flyway:
   check-location: false
   url: jdbc:postgresql://localhost:5432/blog_project_db
@@ -14,5 +22,5 @@ flyway:
   sql-migration-prefix: V
   sql-migration-suffix: .sql
   enabled: true
-  user: postgres
-  password: 01112001
+  user: <username>
+  password: <password>
