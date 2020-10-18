@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  blog-app:
+    image: blog:0.0.1-SNAPSHOT
+    build:
+      context: .
+    container_name: blog
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/blog_project_db
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+
+  db:
+    image: postgres:latest
+    container_name: blog_project_db
+    restart: always
+    env_file:
+      - database.env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  db-data:
+    driver: local
