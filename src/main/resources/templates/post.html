@@ -29,11 +29,10 @@
                 </div>
             </div>
 
-            <h1>Comments:</h1>
-            <!--Comments-->
+            <h2>Comments:</h2>
             <div class="well" th:each="comment : ${post.comments}">
                 <h3 th:text="${comment.body}">Body</h3>
-                <div th:text="'Created: ' + ${#dates.format(comment.createDate, 'dd-MMM-yyyy')} + ' by '">Created by</div>
+                <div th:text="${#dates.format(comment.createDate, 'dd-MM-yyyy')} + ' Commented by '">Commented by</div>
                 <div><a th:text="${comment.user.username}" href="/blog/" th:href="@{'/blog/' + ${comment.user.username}}">User</a></div>
             </div>
 
