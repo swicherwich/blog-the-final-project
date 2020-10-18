@@ -1,5 +1,7 @@
 package io.blog.my.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,12 +14,14 @@ import javax.sql.DataSource;
 import static org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl.DEF_USERS_BY_USERNAME_QUERY;
 
 @EnableWebSecurity
+@Configuration
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 	
 	private final AccessDeniedHandler accessDeniedHandler;
 	private final DataSource dataSource;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
 	public WebSecurity(AccessDeniedHandler accessDeniedHandler,
 	                   DataSource dataSource,
 	                   BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -49,13 +53,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		final String rolesQuery = "select u.username, r.role from users as u " +
-									"inner join user_role as ur on(u.id = ur.user_id) " +
-									"inner join roles as r on (ur.role_id = r.id) where u.username = ?";
+				"inner join user_role as ur on(u.id = ur.user_id) " +
+				"inner join roles as r on (ur.role_id = r.id) where u.username = ?";
 		auth.jdbcAuthentication()
-			.usersByUsernameQuery(DEF_USERS_BY_USERNAME_QUERY)
-			.authoritiesByUsernameQuery(rolesQuery)
-			.dataSource(dataSource)
-			.passwordEncoder(bCryptPasswordEncoder);
+				.usersByUsernameQuery(DEF_USERS_BY_USERNAME_QUERY)
+				.authoritiesByUsernameQuery(rolesQuery)
+				.dataSource(dataSource)
+				.passwordEncoder(bCryptPasswordEncoder);
 	}
-
+	
 }
+
+
+
