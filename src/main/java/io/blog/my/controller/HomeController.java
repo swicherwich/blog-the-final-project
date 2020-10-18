@@ -20,9 +20,11 @@ public class HomeController {
 	
 	@GetMapping("/home")
 	public String home(@RequestParam(defaultValue = "0") int page, Model model) {
-		Page<Post> posts = postService.findAllOrderedByDatePageable(page);
 		
-		model.addAttribute("pager", new Pager(posts));
+		Page<Post> posts = postService.findAllOrderedByDatePageable(page);
+		Pager pager = new Pager(posts);
+		
+		model.addAttribute("pager", pager);
 		
 		return "/home";
 	}
