@@ -2,7 +2,6 @@ package io.blog.my.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@Configuration
 public class MyAccessDeniedHandler implements AccessDeniedHandler {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MyAccessDeniedHandler.class);
