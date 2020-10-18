@@ -5,6 +5,7 @@ import io.blog.my.model.User;
 import io.blog.my.repository.RoleRepository;
 import io.blog.my.repository.UserRepository;
 import io.blog.my.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
 	private final RoleRepository roleRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
 	public UserServiceImpl(UserRepository userRepository,
 	                       RoleRepository roleRepository,
 	                       BCryptPasswordEncoder bCryptPasswordEncoder) {

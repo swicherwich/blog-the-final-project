@@ -4,6 +4,7 @@ import io.blog.my.model.Post;
 import io.blog.my.model.User;
 import io.blog.my.repository.PostRepository;
 import io.blog.my.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class PostServiceImpl implements PostService {
 	private final PostRepository postRepository;
 	private final int MAX_POSTS_ON_PAGE = 5;
 	
+	@Autowired
 	public PostServiceImpl(PostRepository postRepository) {
 		this.postRepository = postRepository;
 	}
