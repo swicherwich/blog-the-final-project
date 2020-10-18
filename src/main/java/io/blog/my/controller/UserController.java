@@ -3,10 +3,11 @@ package io.blog.my.controller;
 import io.blog.my.model.User;
 import io.blog.my.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -23,15 +24,17 @@ public class UserController {
 	}
 	
 	@GetMapping("/sign-up")
-	public String getSignUp(Model model) {
-		model.addAttribute("user", new User());
-		return "/sign-up";
+	public ModelAndView getSignUp(ModelAndView modelAndView) {
+		modelAndView.addObject("user", new User());
+		modelAndView.setStatus(HttpStatus.OK);
+		
+		return modelAndView;
 	}
 
 	@PostMapping("/sign-up")
-	public String signUp(@Valid User user,
-	                            BindingResult bindingResult,
-	                            Model model) {
+	public ModelAndView signUp(@Valid User user,
+	                     BindingResult bindingResult,
+	                     ModelAndView modelAndView) {
 		
 		if (userService.findByEmail(user.getEmail()).isPresent()) {
 			bindingResult
@@ -49,21 +52,23 @@ public class UserController {
 			userService.signUpUser(user);
 			
 			if(userService.findByUsername(user.getUsername()).isPresent()) {
-				model.addAttribute("successMessage", "User has been registered successfully!");
-				model.addAttribute("user", new User());
+				modelAndView.addObject("successMessage", "User has been registered successfully!");
+				modelAndView.addObject("user", new User());
 			}
-			
 		}
 		
-		return "/sign-up";
+		modelAndView.setStatus(HttpStatus.OK);
+		return modelAndView;
 	}
 
 	@GetMapping("/sign-in")
-	public String signIn(Principal principal) {
-		if(principal != null) {
-			return "redirect:/home";
-		}
+	public ModelAndView signIn(Principal principal) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/home");
+		modelAndView.setStatus(HttpStatus.OK);
 		
-		return "/sign-in";
+		if(principal != null) return modelAndView;
+		
+		modelAndView.setViewName("/sign-in");
+		return modelAndView;
 	}
 }

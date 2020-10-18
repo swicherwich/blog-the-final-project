@@ -7,10 +7,11 @@ import io.blog.my.service.CommentService;
 import io.blog.my.service.PostService;
 import io.blog.my.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -31,22 +32,23 @@ public class CommentController {
 	}
 	
 	@PostMapping("/createComment")
-	public String createNewPost(@Valid Comment comment,
-	                            BindingResult bindingResult) {
-		
+	public ModelAndView createNewPost(@Valid Comment comment,
+	                                  BindingResult bindingResult) {
+		ModelAndView modelAndView = new ModelAndView("/commentForm");
 		if (bindingResult.hasErrors())
-			return "/commentForm";
+			return modelAndView;
 		
 		commentService.save(comment);
 		
-		Long id = comment.getPost().getId();
-		return "redirect:/post/" + id;
+		modelAndView.setStatus(HttpStatus.OK);
+		modelAndView.setViewName("redirect:/post/" + comment.getPost().getId());
+		return modelAndView;
 	}
 	
 	@GetMapping("/commentPost/{id}")
-	public String commentPostWithId(@PathVariable Long id,
+	public ModelAndView commentPostWithId(@PathVariable Long id,
 	                                Principal principal,
-	                                Model model) {
+	                                ModelAndView modelAndView) {
 		
 		Optional<Post> post = postService.findForId(id);
 		
@@ -58,13 +60,18 @@ public class CommentController {
 				comment.setUser(user.get());
 				comment.setPost(post.get());
 				
-				model.addAttribute("comment", comment);
+				modelAndView.setStatus(HttpStatus.OK);
+				modelAndView.setViewName("/commentForm");
+				modelAndView.addObject("comment", comment);
 				
-				return "/commentForm";
+				return modelAndView;
 			}
-			return "/error";
+			modelAndView.setStatus(HttpStatus.NOT_FOUND);
+			modelAndView.setViewName("/error");
+			return modelAndView;
 		}
-		return "/error";
+		modelAndView.setStatus(HttpStatus.NOT_FOUND);
+		modelAndView.setViewName("/error");
+		return modelAndView;
 	}
-	
 }
