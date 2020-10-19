@@ -7,6 +7,6 @@ Expected features:
   - delete user account
   - admin functionality support
   - session redis/h2 maintenance
-
+  - remote deployment support
 
 To visit web page go: http://localhost:8080/home
