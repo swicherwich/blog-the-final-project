@@ -136,10 +136,6 @@
 					</layers>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-core</artifactId>
-			</plugin>
 		</plugins>
 	</build>
 
